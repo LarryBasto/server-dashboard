@@ -1,15 +1,17 @@
-from fastapi import APIRouter
 import psutil
 import platform
+import time
+from fastapi import APIRouter
 
-router = APIRouter(prefix="/system", tags=["System"])
+router = APIRouter()
 
-@router.get("/status")
+@router.get("/system")
 def system_status():
     return {
-        "status": "online",
         "os": platform.system(),
         "os_version": platform.version(),
         "cpu_percent": psutil.cpu_percent(interval=1),
-        "memory_percent": psutil.virtual_memory().percent
+        "ram_percent": psutil.virtual_memory().percent,
+        "disk_percent": psutil.disk_usage("/").percent,
+        "uptime_seconds": int(time.time() - psutil.boot_time())
     }
