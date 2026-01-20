@@ -1,20 +1,22 @@
 version: "3.9"
 
 services:
+  # Backend FastAPI
   backend:
     build: ./backend
     container_name: server-dashboard-backend
     env_file:
-      - .env  # <-- toma API_KEY
+      - .env   # Toma API_KEY
     restart: unless-stopped
     ports:
       - "8000:8000"
 
+  # Frontend React + Vite
   frontend:
     build: ./frontend
     container_name: server-dashboard-frontend
     env_file:
-      - .env  # <-- toma VITE_API_KEY y VITE_API_URL
+      - .env   # Toma VITE_API_KEY y VITE_API_URL
     restart: unless-stopped
     ports:
       - "3000:3000"
