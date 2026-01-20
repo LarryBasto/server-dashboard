@@ -1,28 +1,29 @@
-import { useEffect, useState } from "react";
-import { getSystemInfo } from "./services/api";
-import SystemCard from "./components/SystemCard";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Home from "./pages/home";
+import Projects from "./pages/Projects";
+import About from "./pages/About";
 
-function App() {
-  const [data, setData] = useState<any>(null);
-
-  useEffect(() => {
-    getSystemInfo().then(setData).catch(console.error);
-  }, []);
-
-  if (!data) return <p>Cargando...</p>;
-
+export default function App() {
   return (
-    <div style={{ padding: "24px" }}>
-      <h1>Server Dashboard</h1>
+    <Router>
+      <div className="flex min-h-screen">
+        <aside className="w-64 bg-gray-800 text-white p-4">
+          <h2 className="text-xl font-bold mb-4">Server Dashboard</h2>
+          <nav className="flex flex-col gap-2">
+            <Link to="/" className="hover:underline">Inicio</Link>
+            <Link to="/projects" className="hover:underline">Proyectos</Link>
+            <Link to="/about" className="hover:underline">Acerca</Link>
+          </nav>
+        </aside>
 
-      <div style={{ display: "flex", gap: "16px", flexWrap: "wrap" }}>
-        <SystemCard label="CPU %" value={data.cpu_percent} />
-        <SystemCard label="RAM %" value={data.ram_percent} />
-        <SystemCard label="Disco %" value={data.disk_percent} />
-        <SystemCard label="Uptime (s)" value={data.uptime_seconds} />
+        <main className="flex-1 bg-gray-50">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/projects" element={<Projects />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
+        </main>
       </div>
-    </div>
+    </Router>
   );
 }
-
-export default App;
