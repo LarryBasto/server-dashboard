@@ -1,11 +1,29 @@
 version: "3.9"
 
 services:
+  # ========================
+  # Backend (FastAPI)
+  # ========================
   backend:
     build: ./backend
     container_name: server-dashboard-backend
-    ports:
-      - "8000:8000"
     environment:
       API_KEY: SuperSecretAPIKey_server_dashboard_4321
     restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  # ========================
+  # Frontend (React + Vite)
+  # ========================
+  frontend:
+    build: ./frontend
+    container_name: server-dashboard-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # Clave para acceder a la API
+      VITE_API_KEY: SuperSecretAPIKey_server_dashboard_4321
+      # URL interna del backend (docker-compose network)
+      VITE_API_URL: http://backend:8000
